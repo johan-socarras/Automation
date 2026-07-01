@@ -15,8 +15,8 @@ $SiteID        = "Location-01"
 
 # GitHub Configuration
 $GitHubToken   = $env:GITHUB_TOKEN
-$RepoOwner     = "jsocarras96"
-$RepoName      = "Ishida-Updates"
+$RepoOwner     = "your-github-username"
+$RepoName      = "your-repository-name"
 $Branch        = "main"
 
 # Pending report queue
