@@ -8,7 +8,6 @@ A local web app for finding and safely removing duplicate files and folders on W
 
 - Scans chosen folders (or specific drives) for byte-identical duplicate files.
 - Detects whole duplicate folders (not just individual files) — e.g. a backup copy of an entire folder tree — and reports it as one entry instead of one line per file inside it.
-- Skips OneDrive "cloud-only" placeholder files, so it never triggers unwanted downloads.
 - Lets you search whether one specific file or folder has copies anywhere else, letting you choose exactly where to look.
 - Runs as a small local web app: a PowerShell HTTP server on localhost, with an interactive page in your browser.
 - Deleting always goes through the Windows Recycle Bin (reversible) and always requires an explicit checkbox selection plus confirmation — nothing is ever deleted automatically.
