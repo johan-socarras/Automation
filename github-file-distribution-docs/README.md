@@ -4,6 +4,8 @@
 
 This project provides a PowerShell-based system for distributing a centralized update file from GitHub to multiple remote locations.
 
+> This project was developed with the assistance of ChatGPT.
+
 Each location downloads the latest file, compares it against the existing local copy, updates it only when needed, and sends a daily status report back to GitHub.
 
 This can be used to distribute files such as:
