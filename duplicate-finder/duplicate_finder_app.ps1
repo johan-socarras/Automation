@@ -17,27 +17,20 @@ function Get-Presets {
     $oneDrive = $env:OneDrive
     if (-not $oneDrive) { $oneDrive = Join-Path $userHome 'OneDrive' }
 
-    $names = @('Desktop', 'Downloads', 'Documents', 'Pictures')
+    # Prefer the local copy of each known folder. Only fall back to the OneDrive-redirected
+    # path when there is no local folder at all (e.g. Desktop, which some setups redirect
+    # entirely) -- so OneDrive is never offered as a second, duplicate option.
+    $names = @('Desktop', 'Downloads', 'Documents', 'Pictures', 'Music', 'Videos')
     $seen = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
     $out = New-Object System.Collections.Generic.List[object]
 
     foreach ($name in $names) {
-        foreach ($base in @($userHome, $oneDrive)) {
-            $p = Join-Path $base $name
-            if ((Test-Path -LiteralPath $p) -and $seen.Add((Resolve-Path -LiteralPath $p).ProviderPath)) {
-                $label = if ($base -eq $oneDrive) { "$name (OneDrive)" } else { "$name (local)" }
-                $out.Add([pscustomobject]@{ label = $label; path = $p; kind = 'preset' })
-            }
+        $local = Join-Path $userHome $name
+        $cloud = Join-Path $oneDrive $name
+        $p = if (Test-Path -LiteralPath $local) { $local } elseif (Test-Path -LiteralPath $cloud) { $cloud } else { $null }
+        if ($p -and $seen.Add((Resolve-Path -LiteralPath $p).ProviderPath)) {
+            $out.Add([pscustomobject]@{ label = $name; path = $p; kind = 'preset' })
         }
-    }
-
-    foreach ($drive in [System.IO.DriveInfo]::GetDrives()) {
-        if (-not $drive.IsReady) { continue }
-        if ($drive.DriveType -notin @('Fixed', 'Removable')) { continue }
-        $root = $drive.RootDirectory.FullName
-        if ($root -ieq (Join-Path $userHome '')) { continue }
-        $label = "$($drive.Name) ($($drive.DriveType))"
-        $out.Add([pscustomobject]@{ label = $label; path = $root; kind = 'drive' })
     }
 
     return $out
