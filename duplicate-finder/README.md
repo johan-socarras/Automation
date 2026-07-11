@@ -2,6 +2,8 @@
 
 A local web app for finding and safely removing duplicate files and folders on Windows, built entirely in PowerShell — no installs, no external dependencies.
 
+> This project was developed with the assistance of Claude AI.
+
 ## What it does
 
 - Scans chosen folders (or specific drives) for byte-identical duplicate files.
